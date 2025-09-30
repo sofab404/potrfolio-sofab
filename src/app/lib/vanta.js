@@ -1,59 +1,32 @@
 'use client';
+import Head from "next/head";
+import styles from "../globals.css";
+import { useEffect, useRef, useState } from "react";
+import NET from "vanta/dist/vanta.net.min";
+import * as THREE from "three";
 
-import React, { useRef, useEffect, useState } from 'react';
-import * as THREE from 'three'; // Required for Vanta.js
-import NET from 'vanta/dist/vanta.net.min'; // Example effect
-
-const VantaBackground = () => {
-  const vantaRef = useRef(null);
+export default function vantaBackground() {
   const [vantaEffect, setVantaEffect] = useState(0);
-
+  const vantaRef = useRef(null);
   useEffect(() => {
-    // Initialize Vanta.js effect
     if (!vantaEffect) {
       setVantaEffect(
         NET({
           el: vantaRef.current,
-          THREE: THREE, // Pass THREE.js instance
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: false,
-          minHeight: 200.00,
-          minWidth: 200.00,
-          scale: 1.00,
-          scaleMobile: 1.00,
-          color: 0xe83e78,
-          backgroundColor: 0x24163e,
-          points: 9.00,
-          maxDistance: 19.00,
-          showDots: false
-          // Add other Vanta.js options here
+          THREE,
+          color: 0x14b679,
+          backgroundColor: 0x15173c,
+          maxDistance: 34.0,
         })
       );
     }
-
-    // Cleanup Vanta.js effect when component unmounts
     return () => {
-      if (vantaEffect) vantaEffect.destroy();
+      if (vantaEffect) vantaEffect.destory();
     };
-  }, [vantaEffect]); // Re-run effect only if vantaEffect changes
-
+  }, [vantaEffect]);
   return (
-    <div
-      ref={vantaRef}
-      style={{
-        width: '100%',
-        height: '100vh', // Or your desired dimensions
-        position: 'absolute', // To cover the background
-        top: 0,
-        left: 0,
-        zIndex: -1, // Ensure it's in the background
-        //opacity: '50%'
-      }}
-    >
-      {/* Foreground content can go here if desired */}
+    <div className={styles.container}>
+      <main className={styles.main} ref={vantaRef}></main>
     </div>
   );
-};
-
-export default VantaBackground;
+}
